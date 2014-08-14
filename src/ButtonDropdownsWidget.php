@@ -22,6 +22,8 @@ class ButtonDropdownsWidget extends BaseWidget {
     private $title;
     /** @var string */
     private $type;
+    /** @var ButtonDropdownsAction[] */
+    private $actions = array();
 
     private static $types = array(
         self::TYPE_DEFAULT,
@@ -33,6 +35,14 @@ class ButtonDropdownsWidget extends BaseWidget {
         self::TYPE_LINK,
     );
 
+    public function run() {
+        $this->render('button', array(
+            'title' => $this->getTitle(),
+            'type' => $this->getType(),
+            'actions' => $this->getActions(),
+        ));
+    }
+
     public function getTitle() {
         return $this->title;
     }
@@ -43,7 +53,7 @@ class ButtonDropdownsWidget extends BaseWidget {
     }
 
     public function getType() {
-        return $this->type;
+        return $this->type ?: self::TYPE_DEFAULT;
     }
 
     public function setType($type) {
@@ -52,6 +62,22 @@ class ButtonDropdownsWidget extends BaseWidget {
         }
         $this->type = $type;
         return $this;
+    }
+
+    /**
+     * @return ButtonDropdownsAction
+     */
+    public function addAction() {
+        $action = new ButtonDropdownsAction();
+        $this->actions[] = $action;
+        return $action;
+    }
+
+    /**
+     * @return ButtonDropdownsAction[]
+     */
+    public function getActions() {
+        return $this->actions;
     }
 }
  
